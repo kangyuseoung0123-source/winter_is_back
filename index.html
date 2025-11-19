@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>따뜻한 겨울 쉼터 | Warm Winter Retreat</title>
+    <style>
+        /* 폰트 임포트: Nanum Myeongjo (명조체), Nanum Pen Script (손글씨) */
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
+        /* === 기본 스타일 (포근함 강조) === */
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f3ed; /* 크림색 베이지 배경 */
+            color: #4b443c; /* 부드러운 짙은 갈색 텍스트 */
+            overflow-x: hidden;
+        }
+
+        /* === 애니메이션 (눈송이) === */
+        @keyframes snowfall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .snowflake {
+            position: fixed; /* 전체 화면에 고정 */
+            width: 8px; height: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: snowfall linear infinite;
+            z-index: 1000;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        .snowflake:nth-child(even) { width: 5px; height: 5px; animation-duration: 15s; animation-delay: -5s; }
+        .snowflake:nth-child(3n) { width: 10px; height: 10px; animation-duration: 20s; animation-delay: -8s; }
+        .snowflake:nth-child(5n) { width: 4px; height: 4px; animation-duration: 12s; animation-delay: -2s; }
+
+        /* === 헤더 & 네비게이션 === */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7); /* 반투명 배경 */
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-family: 'Nanum Pen Script', cursive;
+            font-size: 2.2em;
+            color: #a0522d; /* 따뜻한 갈색 로고 */
+            text-decoration: none;
+        }
+
+        nav a {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #4b443c;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #a0522d;
+        }
+
+        /* === 메인 히어로 섹션 === */
+        .hero {
+            /* 배경 이미지를 사용자 파일로 교체하세요! */
+            background: url('images/winter_main.jpg') no-repeat center center/cover;
+            /* 임시 이미지: url('https://picsum.photos/1600/900?random=11') */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fffaf0; /* 따뜻한 흰색 텍스트 */
+            position: relative;
+            box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.35); /* 약간 어두운 오버레이 */
+        }
+
+        .hero-title {
+            font-family: 'Nanum Pen Script', cursive;
+            font-size: 6em;
+            margin: 0;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-subtitle {
+            font-family: 'Nanum Myeongjo', serif;
+            font-weight: 400;
+            font-size: 1.8em;
+            margin-top: 10px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+        }
+
+        .cta-button {
+            margin-top: 40px;
+            padding: 12px 35px;
+            background: #a0522d; /* 따뜻한 갈색 버튼 */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .cta-button:hover {
+            background-color: #8b4513;
+            transform: translateY(-2px);
+        }
+
+        /* === 콘텐츠 섹션 공통 === */
+        .content-section {
+            padding: 80px 50px;
+            text-align: center;
+        }
+
+        .content-section h2 {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 3em;
+            color: #a0522d;
+            margin-bottom: 60px;
+        }
+        
+        /* === 카드 컨테이너 === */
+        .card-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .card {
+            width: 300px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: left;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 1.5em;
+            color: #4b443c;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 0.95em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* === 크리스마스 특별 섹션 스타일 === */
+        #christmas-story {
+            background-color: #fcece7; /* 아주 옅은 핑크/레드 계열 배경 */
+            border-top: 10px solid #c0392b; /* 크리스마스 레드 상단 테두리 */
+        }
+        
+        #christmas-story h2 {
+            color: #c0392b; /* 크리스마스 레드 제목 */
+        }
+        
+        .christmas-box {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            border: 1px solid #c0392b;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .christmas-box p.quote {
+            font-family: 'Nanum Pen Script', cursive;
+            font-size: 2.5em;
+            color: #27ae60; /* 크리스마스 그린 강조 */
+            margin: 0 0 20px;
+        }
+        
+        .christmas-button {
+            background-color: #27ae60; /* 크리스마스 그린 버튼 */
+        }
+        
+        .christmas-button:hover {
+            background-color: #1e8449;
+        }
+
+        /* === 푸터 === */
+        footer {
+            background-color: #4b443c; /* 본문 텍스트와 통일감 있는 짙은 갈색 */
+            color: #e6e6e6;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 0.85em;
+        }
+
+        footer a {
+            color: #bfa886;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        /* === 미디어 쿼리 (모바일 반응형) === */
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 20px;
+            }
+            nav {
+                /* 모바일에서는 메뉴 숨김 처리 (추가적인 토글 버튼 필요) */
+            }
+            .hero-title {
+                font-size: 4em;
+            }
+            .hero-subtitle {
+                font-size: 1.2em;
+            }
+            .card {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="snowflake" style="left: 10%;"></div>
+    <div class="snowflake" style="left: 25%; animation-duration: 18s; animation-delay: -3s;"></div>
+    <div class="snowflake" style="left: 45%; animation-duration: 25s; animation-delay: -10s;"></div>
+    <div class="snowflake" style="left: 60%; animation-duration: 17s; animation-delay: -6s;"></div>
+    <div class="snowflake" style="left: 80%; animation-duration: 22s; animation-delay: -4s;"></div>
+
+    <header>
+        <a href="#" class="logo">따뜻한 겨울 쉼터</a>
+        <nav>
+            <a href="#world-winter">세계의 겨울</a>
+            <a href="#christmas-story">🎄 크리스마스</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1 class="hero-title">고요함 속에 피어난 따뜻함</h1>
+        <p class="hero-subtitle">"눈 내리는 계절, 세상 모든 포근한 이야기를 담다."</p>
+        <a href="#world-winter" class="cta-button">겨울 이야기 시작하기</a>
+    </section>
+    
+    <section id="world-winter" class="content-section">
+        <h2>세계의 포근한 겨울 생활</h2>
+        <p style="font-size: 1.1em; color: #777;">
+            각 나라의 독특하고 따뜻한 겨울 풍경과 생활 방식을 만나보세요.
+        </p>
+        
+        <div class="card-container">
+            
+            <div class="card">
+                <img src="images/finland.jpg" alt="핀란드 사우나와 오로라" class="card-image">
+                <div class="card-body">
+                    <h3 class="card-title">🇫🇮 핀란드: 고요한 사우나</h3>
+                    <p class="card-text">극한의 추위 속에서 사우나로 몸을 녹이고, 북유럽의 낭만인 오로라를 기다리는 시간.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="images/japan.jpg" alt="일본 노천 온천" class="card-image">
+                <div class="card-body">
+                    <h3 class="card-title">🇯🇵 일본: 설경 속 노천 온천</h3>
+                    <p class="card-text">하얀 눈이 내리는 가운데 따뜻한 온천에 몸을 담그는 치유의 시간과 삿포로 눈축제.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="images/swiss.jpg" alt="스위스 샬레" class="card-image">
+                <div class="card-body">
+                    <h3 class="card-title">🇨🇭 스위스: 샬레의 포근함</h3>
+                    <p class="card-text">알프스 산맥의 작은 샬레에서 즐기는 퐁듀와 따뜻한 코코아. 눈 덮인 겨울 문화.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="christmas-story" class="content-section">
+        <h2>🎁 세상에서 가장 따뜻한 날, 크리스마스</h2>
+        
+        <div class="christmas-box">
+            <p class="quote">
+                "크리스마스는 단순히 날짜가 아닌, 마음이 따뜻해지는 기적입니다."
+            </p>
+            
+            <p style="font-size: 1.1em; line-height: 1.8; color: #555;">
+                전 세계적으로 크리스마스는 나눔과 감사의 상징입니다. 이 날의 유래, 각국의 특별한 전통 음식과 풍습, 그리고 우리의 일상에 가져다주는 따뜻한 의미를 자세히 소개합니다. 우리가 크리스마스를 통해 배우는 기쁨을 함께 나눠보세요.
+            </p>
+            
+            <a href="#" class="cta-button christmas-button" style="margin-top: 30px;">
+                크리스마스 문화 자세히 보기 🎅
+            </a>
+            
+        </div>
+    </section>
+
+    <footer id="contact">
+        <p>&copy; 2025 Warm Winter Retreat. All Rights Reserved.</p>
+        <p>
+            <a href="#">문의하기</a> |
+            <a href="#">개인정보 처리방침</a>
+        </p>
+    </footer>
+
+</body>
+</html>
